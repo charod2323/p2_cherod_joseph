@@ -3,25 +3,26 @@ import requests
 
 from bs4 import BeautifulSoup
 
-
-# every categories
-
-get_categories()
+from utils import get_categories, get_jpg, books_of_category, get_product_info
 
 
 
 
-
-# the books "thriller"
-
-books_of_categories_thriller()
+# RETRIEVE ALL CATEGORIES
+list_categories = get_categories()
 
 
+#LISTE  IMAGES D UNE CATEGORIE (TRAVEL)
+list_jpg_travel_categorie = get_jpg()
 
 
-# tous les elements de la liste pour un livre
+# RETURNS EVERY BOOKS OF CATEGORIES TRAVELD
+list_title_categories_traveld = books_of_category('https://books.toscrape.com/catalogue/category/books/travel_2/index.html')
 
-get_product_info(url3 = "http://books.toscrape.com/catalogue/killing-floor-jack-reacher-1_382/index.html")
+
+
+#RETOURNE PRODUCT INFO
+#list_product_info = get_product_info('https://books.toscrape.com/catalogue/its-only-the-himalayas_981/index.html')
 
 
 
