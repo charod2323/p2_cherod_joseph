@@ -9,28 +9,23 @@ page = requests.get(url)
 soup = BeautifulSoup(page.content,'html.parser')
 
 
-#RETURNS EVERY CATEGORIES OF BOOKSCRAP WEBSITE
 def get_categories():
-
+    """
+    Returns a list of every categories of bookscrap website.
+    """
     f =  soup.find('aside',{'class':'sidebar col-sm-4 col-md-3'}).find('ul').findAll('li')
-
-    listCategorie = []
-    for i in range (1,51):
+    categories = []
+    for i in range(1, len(f)):
         a = f[i].text.replace("\n","")
         b = a.strip()
-        listCategorie.append(b)
-    print("\n".join(listCategorie))
-    print("")
-    print("")
-    print("")
-    print("")
+        categories.append(b)
+    return categories
     
-
-#LIST JPG CATEGORY (TRAVEL) 
-
 
 def get_jpg():
-    
+    """
+    Return a list of jpg category (travel).
+    """
     images = soup.findAll('div',{'class':'image_container'})
 
     img_list = []  
@@ -40,16 +35,12 @@ def get_jpg():
         h = w.replace('../../../../','https://books.toscrape.com/')
         img_list.append(h)
     print("\n".join(img_list)) 
-    print("")
-    print("")
-    print("")
 
 
 # RETURNS EVERY TITLES OF CATEGORIES TRAVELD
-
-def books_of_category(category_title):
+def books_of_category(category_url):
     
-     url = category_title  
+     url = category_url
      titre_categorie_traveld = soup.findAll('h3') 
      for t in titre_categorie_traveld:
          w = t.find('a')
@@ -61,12 +52,7 @@ def books_of_category(category_title):
      print("")
 
 
-
 #RETURN PRODUCT INFO D'UN LIVRES D'UNE CATEGORIE (TRAVELD)
-
-
-
-
 def get_product_info(category_info ):
     
     url1 = category_info
@@ -133,14 +119,6 @@ def get_books_links_one_categorie():
         link = a['href']
         lienProductInfo.append(link.replace('../../../','https://books.toscrape.com/catalogue/'))
     print("\n".join(lienProductInfo))    
-
-
-print("")
-print("")
-print("")
-print("")
-print("")
-print("")  
 
 
 def get_images_titles_urls_product_info_of_one_categorie(): 
@@ -215,10 +193,6 @@ def get_images_titles_urls_product_info_of_one_categorie():
       print(product_info) 
 
 
-
-
-
-
 def get_url_category():
             
   # LIST: ADRESS URL OF EACH CATEGORY 
@@ -236,5 +210,3 @@ def get_url_category():
         soup1 = BeautifulSoup(page1.content,'html.parser')
         listUrlCategorie.append(url1)
         print(*listUrlCategorie,sep="\n")
-           
-         
