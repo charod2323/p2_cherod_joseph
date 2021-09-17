@@ -1,23 +1,22 @@
-from bs4 import BeautifulSoup
 import csv
 import requests
+
+from bs4 import BeautifulSoup
 
 url = 'https://books.toscrape.com/catalogue/category/books/travel_2/index.html'
 page = requests.get(url)
 soup = BeautifulSoup(page.content,'html.parser')
 
 
-
-
-def get_url_category():
+def get_categories_url():
   """
   Adress url of each pages category  
   """
-  f =  soup.find('aside',{'class':'sidebar col-sm-4 col-md-3'}).find('ul').findAll('li')
+  f =  soup.find('aside', {'class':'sidebar col-sm-4 col-md-3'}).find('ul').findAll('li')
   url_categorie = []
   j = 0
   i = 1
-  for i in range (2,len(f)):
+  for i in range(2,len(f)+1):
       j = j + 1
       a = f[j].text.replace("\n","")
       b = a.strip()
@@ -27,15 +26,25 @@ def get_url_category():
   return url_categorie
 
 
-
+def get_books_url_of_category(url):
+    """
+    Return all books of one category with url given.
+    """
+    page = requests.get(url)
+    soup = BeautifulSoup(page.content,'html.parser')
+    links = soup.findAll('div',{'class':'image_container'})
+    book_urls = []
+    for link in links:
+        a = link.find('a')
+        href = a['href']
+        book_urls.append(href.replace('../../../','https://books.toscrape.com/catalogue/'))
+    return book_urls
 
 
 def get_books_links_one_categorie(adress_category):
     """
     links products info
     """
-    
-    
     for y in range(1):
        
         url2 = adress_category[y]
@@ -54,67 +63,43 @@ def get_books_links_one_categorie(adress_category):
           lien_product_info.append(link.replace('../../../','https://books.toscrape.com/catalogue/')) 
         for i in lien_product_info:
             print("lien_product_info : ",i)
-
-  
-        
     return lien_product_info
 
 
-#extraire les données produit de tous les livres de la catégorie choisie, puis écrivez les données dans un seul fichier CSV.
-    
-
-
-def get_products(lien_product_info):
+def get_product_info(book_url):
     """
-    data products infos
+    Return all data products infos.
+    Extraire les données produit de tous les livres de la catégorie
+    choisie, puis écrivez les données dans un seul fichier CSV.
     """
-    
-    catalogue_product = []
-      
-    for x in range(len(lien_product_info)):
-        url6 = lien_product_info[x]  
-        page6 = requests.get(url6)
-        soup6 = BeautifulSoup(page6.content,'html.parser') 
-                  
-          
-        images = soup6.find('div',{'class':'carousel-inner'}).find('div',{'class':'item active'})
-        t = images.find('img')
-        w = t['src']
+    page = requests.get(book_url)
+    soup = BeautifulSoup(page.content,'html.parser')
 
-        title_book = soup6.find('ul',{'class':'breadcrumb'}).find('li',{'class':'active'}) 
-        books = soup6.find('ul',{'class':'breadcrumb'}).findAll('li') 
-        product = soup6.findAll('th')
-        product2 = soup6.findAll('td')
-        title = soup6.find('h1')
+    images = soup.find('div',{'class':'carousel-inner'}).find('div',{'class':'item active'})
+    t = images.find('img')
+    w = t['src']
 
-        catalogue_product =  [
-                               {"url page" : lien_product_info[x]},
-                               {"url_image" : w.replace('../../','https://books.toscrape.com/')},
-                               {"title" : title_book.string},
-                               {product[0].text: product2[0].text},
-                               {product[1].text: product2[1].text},
-                               {product[2].text: product2[2].text},
-                               {product[3].text: product2[3].text}, 
-                               {product[4].text: product2[4].text},
-                               {product[5].text: product2[5].text},
-                               {product[6].text: product2[6].text} 
+    title_book = soup.find('ul',{'class':'breadcrumb'}).find('li',{'class':'active'})
+    books = soup.find('ul',{'class':'breadcrumb'}).findAll('li')
+    product = soup.findAll('th')
+    product2 = soup.findAll('td')
+    title = soup.find('h1')
 
-                                  ]  
+    catalogue_product = {
+       'url page' : book_url,
+       "url_image" : w.replace('../../','https://books.toscrape.com/'),
+       'title' : title_book.string,
+       product[0].text: product2[0].text,
+       product[1].text: product2[1].text,
+       product[2].text: product2[2].text,
+       product[3].text: product2[3].text,
+       product[4].text: product2[4].text,
+       product[5].text: product2[5].text,
+       product[6].text: product2[6].text
+    }
+
+    # TODO: Download image of current product (catalogue_product['url_image'])
+    print("catalogue_product['url_image']", catalogue_product['url_image'])
 
 
-
-        print("")
-           
-                                                                              
-
-        for catalogue in catalogue_product:
-             print(catalogue)                       
-
-                            
-
-
-
-
-
-
-
+    return catalogue_product
