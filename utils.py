@@ -1,4 +1,4 @@
-import csv
+
 import requests
 
 from bs4 import BeautifulSoup
@@ -9,9 +9,9 @@ soup = BeautifulSoup(page.content,'html.parser')
 
 
 def get_categories_url():
-  """
-  Adress url of each pages category  
-  """
+  
+  #Adress url of each pages category  
+  
   f =  soup.find('aside', {'class':'sidebar col-sm-4 col-md-3'}).find('ul').findAll('li')
   url_categorie = []
   j = 0
@@ -27,9 +27,9 @@ def get_categories_url():
 
 
 def get_books_url_of_category(url):
-    """
-    Return all books of one category with url given.
-    """
+    
+    #Return all books of one category with url given.
+   
     page = requests.get(url)
     soup = BeautifulSoup(page.content,'html.parser')
     links = soup.findAll('div',{'class':'image_container'})
@@ -42,9 +42,9 @@ def get_books_url_of_category(url):
 
 
 def get_books_links_one_categorie(adress_category):
-    """
-    links products info
-    """
+   
+    #links products info
+    
     for y in range(1):
        
         url2 = adress_category[y]
@@ -67,18 +67,19 @@ def get_books_links_one_categorie(adress_category):
 
 
 def get_product_info(book_url):
-    """
-    Return all data products infos.
-    Extraire les données produit de tous les livres de la catégorie
-    choisie, puis écrivez les données dans un seul fichier CSV.
-    """
+    
+    #Return all data products infos.
+    #Extraire les données produit de tous les livres de la catégorie
+    #choisie, puis écrivez les données dans un seul fichier CSV.
+   
     page = requests.get(book_url)
     soup = BeautifulSoup(page.content,'html.parser')
-
+    
     images = soup.find('div',{'class':'carousel-inner'}).find('div',{'class':'item active'})
     t = images.find('img')
     w = t['src']
-
+    pictures = w.replace('../../','https://books.toscrape.com/')
+    count = 0
     title_book = soup.find('ul',{'class':'breadcrumb'}).find('li',{'class':'active'})
     books = soup.find('ul',{'class':'breadcrumb'}).findAll('li')
     product = soup.findAll('th')
@@ -87,7 +88,7 @@ def get_product_info(book_url):
 
     catalogue_product = {
        'url page' : book_url,
-       "url_image" : w.replace('../../','https://books.toscrape.com/'),
+       "url_image" : pictures,
        'title' : title_book.string,
        product[0].text: product2[0].text,
        product[1].text: product2[1].text,
@@ -97,9 +98,22 @@ def get_product_info(book_url):
        product[5].text: product2[5].text,
        product[6].text: product2[6].text
     }
+    
+    # Creation data pictures
+    data_name_img = []
+    date_name_title = []
+    
+    data_name_img.append(catalogue_product["url_image"])
+    date_name_title.append(catalogue_product["title"])
 
-    # TODO: Download image of current product (catalogue_product['url_image'])
+    name_img = catalogue_product["title"]     
+    f = open(name_img,'wb') 
+    response = requests.get(catalogue_product["url_image"])
+    f.write(response.content)
+    f.close()  
+    
+     # TODO: Download image of current product (catalogue_product['url_image'])
     print("catalogue_product['url_image']", catalogue_product['url_image'])
 
-
-    return catalogue_product
+    return catalogue_product   
+              

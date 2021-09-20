@@ -1,5 +1,8 @@
+import csv
 
 from utils import  get_categories_url, get_books_url_of_category, get_product_info
+
+
 
 #GET ADRESS URL OF PAGES EACH CATEGORY
 
@@ -24,6 +27,23 @@ for i, category_url in enumerate(category_urls):
         break
 
 print('len(products):', len(products))
+
+# Creation file csv
+category_urls_name = []
+products_news = []
+
+for categorys in category_urls:
+    category_urls_name.append(categorys)
+
+title_file = ['category']
+with open('files','w') as product_files:
+  writer = csv.writer(product_files,delimiter= ',') 
+  writer.writerow(title_file)
+  for categorys in zip(category_urls_name):
+    writer.writerow([categorys])
+
+
+
 
 # Record all into a csv file
 # TODO:
