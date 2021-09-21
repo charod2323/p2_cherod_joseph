@@ -116,6 +116,7 @@ def get_product_info(book_url):
 
     return catalogue_product    
 
+
 def get_csv(prod):
     """
     Creation csv

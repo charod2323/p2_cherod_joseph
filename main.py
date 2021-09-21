@@ -25,13 +25,7 @@ for i, category_url in enumerate(category_urls):
 
 print('len(products):', len(products))
 
-
-
 get_csv(products)
-
-
-
-
 # Record all into a csv file
 # TODO:
 # create_books_csv(products)
