@@ -1,5 +1,5 @@
 
-from utils import  get_categories_url, get_books_url_of_category, get_product_info, creation_data_pictures, create_books_csv 
+from utils import  get_categories_url, get_books_url_of_category, get_product_info, get_csv 
 
 #GET ADRESS URL OF PAGES EACH CATEGORY
 
@@ -25,10 +25,9 @@ for i, category_url in enumerate(category_urls):
 
 print('len(products):', len(products))
 
-for item in range(len(product_info)):
-    creation_data_pictures(product_info)
 
-create_books_csv(products)
+
+get_csv(products)
 
 
 

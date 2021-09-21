@@ -97,34 +97,31 @@ def get_product_info(book_url):
         product[5].text: product2[5].text,
         product[6].text: product2[6].text
     }
-    return catalogue_product
+    
+    # Download image
+    data_name_img = []
+    date_name_title = []
+
+    data_name_img.append(catalogue_product["url_image"])
+    date_name_title.append(catalogue_product["title"])
+
+    name_img = catalogue_product["title"]
+    f = open(name_img, 'wb')
+    response = requests.get(catalogue_product["url_image"])
+    f.write(response.content)
+    f.close()
 
     # TODO: Download image of current product (catalogue_product['url_image'])
     print("catalogue_product['url_image']", catalogue_product['url_image'])
 
-def creation_data_pictures(product_infos):
-    data_name_img = []
-    date_name_title = []
+    return catalogue_product    
 
-    data_name_img.append(product_infos["url_image"])
-    date_name_title.append(product_infos["title"])
-
-    name_img = product_infos["title"]
-    f = open(name_img, 'wb')
-    response = requests.get(product_infos["url_image"])
-    f.write(response.content)
-    f.close()
-
-    
-
-    
-
-def create_books_csv(prod):
-    
-    
+def get_csv(prod):
+    """
+    Creation csv
+    """
     for categorys in prod:           
-        
-        title_file = ['categorys']
+        title_file = ['product_information']
         with open('files','w') as product_files:
              writer = csv.writer(product_files,delimiter= ',')
              writer.writerow(title_file)
