@@ -43,8 +43,8 @@ def all_pagination(pages):
 
     for y in pages:
         w = w + 1
-        p = "page-" + str(x + 1) + ".html"  # la modif
-        url4 = pages[w - 1].replace("index.html", p)  # cibler et modifier d'url
+        p = "page-" + str(x + 1) + ".html"  
+        url4 = pages[w - 1].replace("index.html", p)  
         page = requests.get(url4)
         soup = BeautifulSoup(page.content, 'html.parser')
         status = page.status_code
