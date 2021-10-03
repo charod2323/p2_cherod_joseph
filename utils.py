@@ -33,6 +33,7 @@ def get_categories_url():
 
     return listUrlCategorie
 
+
 def all_pagination(pages):
     """
     return all pages
@@ -43,8 +44,8 @@ def all_pagination(pages):
 
     for y in pages:
         w = w + 1
-        p = "page-" + str(x + 1) + ".html"  
-        url4 = pages[w - 1].replace("index.html", p)  
+        p = "page-" + str(x + 1) + ".html"  # la modif
+        url4 = pages[w - 1].replace("index.html", p)  # cibler et modifier d'url
         page = requests.get(url4)
         soup = BeautifulSoup(page.content, 'html.parser')
         status = page.status_code
@@ -110,7 +111,7 @@ def get_product_info(book_url):
 
     # Download image
     name_img = catalogue_product["title"] + '.jpg'
-    f = open('images :' + name_img, 'wb')
+    f = open('images/' + name_img, 'wb')
     response = requests.get(catalogue_product["url_image"])
     f.write(response.content)
     f.close()
@@ -122,7 +123,7 @@ def create_books_csv(products):
     """
     Create a csv file containing all products of the website.
     """
-    with open('csv', 'w', newline='') as csvfile:
+    with open('csv/products.csv', 'w', newline='') as csvfile:
         # Get all keys of product as header
         fieldnames = list(products[0].keys())
 
@@ -133,8 +134,3 @@ def create_books_csv(products):
         # Add new line for each product
         for product in products:
             writer.writerow(product)
-
-
-
-
-
