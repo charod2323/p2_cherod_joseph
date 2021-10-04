@@ -13,17 +13,17 @@ def get_categories_url():
     soup = BeautifulSoup(page.content, 'html.parser')
     f = soup.find('aside', {'class': 'sidebar col-sm-4 col-md-3'}).find('ul').findAll('li')
     listUrlCategorie = []
-    j = 0
+    compteur_j = 0
     i = 1
     for u in range(2,len(f)+1):
         i = i + 1
-        j = j + 1
-        a = f[j].text.replace("\n", "")
-        b = a.strip()
+        compteur_j = compteur_j + 1
+        format_text = f[compteur_j].text.replace("\n", "")
+        b = format_text.strip()
         v = b.lower()
         t = str(v)
-        d = v.count(" ")
-        if d > 0:
+        nbr_espace = v.count(" ")
+        if nbr_espace > 0:
             c = t.replace(" ", "-")
             url0 = "https://books.toscrape.com/catalogue/category/books/" + str(c) + "_" + str(i) + "/index.html"
             listUrlCategorie.append(url0)
@@ -44,8 +44,8 @@ def all_pagination(pages):
 
     for y in pages:
         w = w + 1
-        p = "page-" + str(x + 1) + ".html"  # la modif
-        url4 = pages[w - 1].replace("index.html", p)  # cibler et modifier d'url
+        p = "page-" + str(x + 1) + ".html" 
+        url4 = pages[w - 1].replace("index.html", p)  
         page = requests.get(url4)
         soup = BeautifulSoup(page.content, 'html.parser')
         status = page.status_code

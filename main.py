@@ -17,7 +17,7 @@ for i, category_url in enumerate(all_pages):
     # Retrieve all product info for each book of one category
     for book_url in book_urls:
         product_info = get_product_info(book_url)
-        # print('product_info:', product_info)
+        print('product_info:', product_info)
         products.append(product_info)
     if i == 0:
         break
