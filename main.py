@@ -21,7 +21,7 @@ for i, category_url in enumerate(all_pages):
         products.append(product_info)
     if i == 0:
         break
-print('len(products):', len(products))
+
 
 # Record all products of all website into a csv file
 create_books_csv(products)
